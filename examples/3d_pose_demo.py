@@ -1,3 +1,10 @@
+'''
+This assumes you already have:
+
+calibration matrices
+at least 2 webcams
+'''
+
 import cv2
 import numpy as np
 
