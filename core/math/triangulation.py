@@ -1,7 +1,7 @@
 """
 triangulation.py
 
-Multi-view triangulation utilities for OpenMoCapLab.
+Multi-view triangulation utilities for MoCapLab.
 Supports 2+ cameras.
 """
 
