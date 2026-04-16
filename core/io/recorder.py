@@ -1,7 +1,7 @@
 """
 recorder.py
 
-Mocap recording system for OpenMoCapLab.
+Mocap recording system for MoCapLab.
 
 Stores timestamped landmark data for later export.
 """
