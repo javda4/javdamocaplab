@@ -1,14 +1,7 @@
 """
 webcam.py
 
-Core webcam capture module for OpenMoCapLab.
-
-Features
---------
-- Threaded frame capture
-- Adjustable resolution and FPS
-- Timestamped frames
-- Optional frame mirroring
+Core webcam capture module for MoCapLab.
 """
 
 import cv2
@@ -17,6 +10,7 @@ import time
 
 
 class WebcamCamera:
+
     def __init__(
         self,
         device_id=0,
@@ -24,7 +18,21 @@ class WebcamCamera:
         height=720,
         fps=30,
         mirror=False,
+        config=None
     ):
+        """
+        You can either:
+        - pass explicit args (old way)
+        - OR pass config dict (new project system)
+        """
+
+        if config is not None:
+            device_id = config.get("index", device_id)
+            width = config.get("width", width)
+            height = config.get("height", height)
+            fps = config.get("fps", fps)
+            mirror = config.get("mirror", mirror)
+
         self.device_id = device_id
         self.width = width
         self.height = height
@@ -40,7 +48,7 @@ class WebcamCamera:
         self.lock = threading.Lock()
 
     def start(self):
-        """Start webcam capture."""
+
         self.cap = cv2.VideoCapture(self.device_id)
 
         if not self.cap.isOpened():
@@ -55,8 +63,9 @@ class WebcamCamera:
         self.thread.start()
 
     def _update(self):
-        """Internal thread for grabbing frames."""
+
         while self.running:
+
             ret, frame = self.cap.read()
 
             if not ret:
@@ -65,19 +74,17 @@ class WebcamCamera:
             if self.mirror:
                 frame = cv2.flip(frame, 1)
 
-            timestamp = time.time()
-
             with self.lock:
                 self.frame = frame
-                self.timestamp = timestamp
+                self.timestamp = time.time()
 
     def read(self):
-        """Return latest frame and timestamp."""
+
         with self.lock:
             return self.frame, self.timestamp
 
     def stop(self):
-        """Stop capture."""
+
         self.running = False
 
         if self.thread:
