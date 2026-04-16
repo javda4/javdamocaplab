@@ -1,7 +1,7 @@
 """
 multicam.py
 
-Multi-camera capture system for OpenMoCapLab.
+Multi-camera capture system for MoCapLab.
 
 Supports synchronized frame grabbing across
 multiple webcams for 3D reconstruction pipelines.
